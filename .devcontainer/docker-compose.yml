@@ -1,0 +1,5 @@
+version: "2.3"
+services:
+  cvat:
+    volumes:
+      - ./cvat/:/home/django/cvat/
