@@ -141,7 +141,8 @@ html {
 }
 
 .activeTabButton {
-    background-color: #81aee8 !important;
+    background-color: white !important;
+    box-shadow: none !important;
 }
 
 .hidden {

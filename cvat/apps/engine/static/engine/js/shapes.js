@@ -1946,8 +1946,7 @@ class ShapeView extends Listener {
             let title = document.createElement('div');
 
             let titleText = document.createElement('label');
-            titleText.innerText = `${label} ${id} ` +
-                `[${type.split('_')[1]}, ${type.split('_')[0]}]`;
+            titleText.innerText = `${label} ${id}`;
             title.appendChild(titleText);
             title.classList.add('bold');
             title.style.marginRight = '32px';
@@ -1966,7 +1965,9 @@ class ShapeView extends Listener {
 
         function makeButtonBlock(type, outside, shortkeys) {
             let buttonBlock = document.createElement('div');
-            buttonBlock.appendChild(document.createElement('hr'));
+            let hrBlock = document.createElement('hr');
+            hrBlock.style.borderColor = '#888';
+            buttonBlock.appendChild(hrBlock);
 
             if (!outside) {
                 let annotationCenter = document.createElement('center');
@@ -1977,10 +1978,10 @@ class ShapeView extends Listener {
                     ${shortkeys['switch_lock_property'].view_value} - ${shortkeys['switch_lock_property'].description}` + `\n` +
                     `${shortkeys['switch_all_lock_property'].view_value} - ${shortkeys['switch_all_lock_property'].description}`);
 
-                let occludedButton = document.createElement('button');
-                occludedButton.classList.add('graphicButton', 'occludedButton');
-                occludedButton.setAttribute('title', `
-                    ${shortkeys['switch_occluded_property'].view_value} - ${shortkeys['switch_occluded_property'].description}`);
+                // let occludedButton = document.createElement('button');
+                // occludedButton.classList.add('graphicButton', 'occludedButton');
+                // occludedButton.setAttribute('title', `
+                //     ${shortkeys['switch_occluded_property'].view_value} - ${shortkeys['switch_occluded_property'].description}`);
 
                 let copyButton = document.createElement('button');
                 copyButton.classList.add('graphicButton', 'copyButton');
@@ -1988,10 +1989,10 @@ class ShapeView extends Listener {
                     ${shortkeys['copy_shape'].view_value} - ${shortkeys['copy_shape'].description}` + `\n` +
                     `${shortkeys['switch_paste'].view_value} - ${shortkeys['switch_paste'].description}`);
 
-                let propagateButton = document.createElement('button');
-                propagateButton.classList.add('graphicButton', 'propagateButton');
-                propagateButton.setAttribute('title', `
-                    ${shortkeys['propagate_shape'].view_value} - ${shortkeys['propagate_shape'].description}`);
+                // let propagateButton = document.createElement('button');
+                // propagateButton.classList.add('graphicButton', 'propagateButton');
+                // propagateButton.setAttribute('title', `
+                //     ${shortkeys['propagate_shape'].view_value} - ${shortkeys['propagate_shape'].description}`);
 
                 let hiddenButton = document.createElement('button');
                 hiddenButton.classList.add('graphicButton', 'hiddenButton');
@@ -2000,17 +2001,17 @@ class ShapeView extends Listener {
                     `${shortkeys['switch_all_hide_mode'].view_value} - ${shortkeys['switch_all_hide_mode'].description}`);
 
                 annotationCenter.appendChild(lockButton);
-                annotationCenter.appendChild(occludedButton);
+                // annotationCenter.appendChild(occludedButton);
                 annotationCenter.appendChild(copyButton);
-                annotationCenter.appendChild(propagateButton);
+                // annotationCenter.appendChild(propagateButton);
                 annotationCenter.appendChild(hiddenButton);
                 buttonBlock.appendChild(annotationCenter);
 
                 this._uis.buttons['lock'] = lockButton;
-                this._uis.buttons['occlude'] = occludedButton;
+                // this._uis.buttons['occlude'] = occludedButton;
                 this._uis.buttons['hide'] = hiddenButton;
                 this._uis.buttons['copy'] = copyButton;
-                this._uis.buttons['propagate'] = propagateButton;
+                // this._uis.buttons['propagate'] = propagateButton;
             }
 
             if (type.split('_')[0] == 'interpolation') {
@@ -2061,7 +2062,7 @@ class ShapeView extends Listener {
 
                 let htmlLabel = document.createElement('label');
                 htmlLabel.classList.add('semiBold');
-                htmlLabel.innerText = 'Label: ';
+                htmlLabel.innerText = 'برچسب: ';
 
                 let select = document.createElement('select');
                 select.classList.add('regular');
@@ -2092,7 +2093,7 @@ class ShapeView extends Listener {
                 let block = document.createElement('div');
                 let htmlLabel = document.createElement('label');
                 htmlLabel.classList.add('semiBold');
-                htmlLabel.innerHTML = 'Attributes <br>';
+                htmlLabel.innerHTML = 'ویژگی‌ها <br>';
 
                 block.appendChild(htmlLabel);
 

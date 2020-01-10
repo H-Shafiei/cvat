@@ -601,14 +601,14 @@ class ShapeCreatorView {
                 this._drawAim();
             }
 
-            this._createButton.text("Stop Creation");
+            this._createButton.text("انصراف");
             document.oncontextmenu = () => false;
             this._create();
         }
         else {
             this._removeAim();
             this._cancel = true;
-            this._createButton.text("Create Shape");
+            this._createButton.text("ایجاد");
             document.oncontextmenu = null;
             if (this._drawInstance) {
                 // We save current result for poly shape if it's need

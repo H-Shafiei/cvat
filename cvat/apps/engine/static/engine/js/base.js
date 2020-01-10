@@ -217,10 +217,10 @@ $.ajaxSetup({
 
 
 $(document).ready(() => {
-    $('body').css({
-        width: `${window.screen.width}px`,
-        height: `${window.screen.height * 0.95}px`,
-    });
+    // $('body').css({
+    //     width: `${window.screen.width}px`,
+    //     height: `${window.screen.height * 0.95}px`,
+    // });
 });
 
 function isDefaultFormat(dumperName, taskMode) {

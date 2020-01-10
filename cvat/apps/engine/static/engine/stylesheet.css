@@ -4,14 +4,255 @@
  * SPDX-License-Identifier: MIT
  */
 
+
+/* ----------------------- Fonts ----------------------- */
+@font-face {
+    font-family: Vazir;
+    src: url('fonts/vazir/Vazir.eot');
+    src: url('fonts/vazir/Vazir.eot?#iefix') format('embedded-opentype'),
+        url('fonts/vazir/Vazir.woff2') format('woff2'),
+        url('fonts/vazir/Vazir.woff') format('woff'),
+        url('fonts/vazir/Vazir.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: Vazir;
+    src: url('fonts/vazir/Vazir-Bold.eot');
+    src: url('fonts/vazir/Vazir-Bold.eot?#iefix') format('embedded-opentype'),
+        url('fonts/vazir/Vazir-Bold.woff2') format('woff2'),
+        url('fonts/vazir/Vazir-Bold.woff') format('woff'),
+        url('fonts/vazir/Vazir-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: Vazir;
+    src: url('fonts/vazir/Vazir-Black.eot');
+    src: url('fonts/vazir/Vazir-Black.eot?#iefix') format('embedded-opentype'),
+        url('fonts/vazir/Vazir-Black.woff2') format('woff2'),
+        url('fonts/vazir/Vazir-Black.woff') format('woff'),
+        url('fonts/vazir/Vazir-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+@font-face {
+    font-family: Vazir;
+    src: url('fonts/vazir/Vazir-Medium.eot');
+    src: url('fonts/vazir/Vazir-Medium.eot?#iefix') format('embedded-opentype'),
+        url('fonts/vazir/Vazir-Medium.woff2') format('woff2'),
+        url('fonts/vazir/Vazir-Medium.woff') format('woff'),
+        url('fonts/vazir/Vazir-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: Vazir;
+    src: url('fonts/vazir/Vazir-Light.eot');
+    src: url('fonts/vazir/Vazir-Light.eot?#iefix') format('embedded-opentype'),
+        url('fonts/vazir/Vazir-Light.woff2') format('woff2'),
+        url('fonts/vazir/Vazir-Light.woff') format('woff'),
+        url('fonts/vazir/Vazir-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: Vazir;
+    src: url('fonts/vazir/Vazir-Thin.eot');
+    src: url('fonts/vazir/Vazir-Thin.eot?#iefix') format('embedded-opentype'),
+        url('fonts/vazir/Vazir-Thin.woff2') format('woff2'),
+        url('fonts/vazir/Vazir-Thin.woff') format('woff'),
+        url('fonts/vazir/Vazir-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: VazirFD;
+    src: url('fonts/vazir-fd/Vazir-FD.eot');
+    src: url('fonts/vazir-fd/Vazir-FD.eot?#iefix') format('embedded-opentype'),
+        url('fonts/vazir-fd/Vazir-FD.woff2') format('woff2'),
+        url('fonts/vazir-fd/Vazir-FD.woff') format('woff'),
+        url('fonts/vazir-fd/Vazir-FD.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: VazirFD;
+    src: url('fonts/vazir-fd/Vazir-Bold-FD.eot');
+    src: url('fonts/vazir-fd/Vazir-Bold-FD.eot?#iefix') format('embedded-opentype'),
+        url('fonts/vazir-fd/Vazir-Bold-FD.woff2') format('woff2'),
+        url('fonts/vazir-fd/Vazir-Bold-FD.woff') format('woff'),
+        url('fonts/vazir-fd/Vazir-Bold-FD.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: VazirFD;
+    src: url('fonts/vazir-fd/Vazir-Black-FD.eot');
+    src: url('fonts/vazir-fd/Vazir-Black-FD.eot?#iefix') format('embedded-opentype'),
+        url('fonts/vazir-fd/Vazir-Black-FD.woff2') format('woff2'),
+        url('fonts/vazir-fd/Vazir-Black-FD.woff') format('woff'),
+        url('fonts/vazir-fd/Vazir-Black-FD.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+@font-face {
+    font-family: VazirFD;
+    src: url('fonts/vazir-fd/Vazir-Medium-FD.eot');
+    src: url('fonts/vazir-fd/Vazir-Medium-FD.eot?#iefix') format('embedded-opentype'),
+        url('fonts/vazir-fd/Vazir-Medium-FD.woff2') format('woff2'),
+        url('fonts/vazir-fd/Vazir-Medium-FD.woff') format('woff'),
+        url('fonts/vazir-fd/Vazir-Medium-FD.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: VazirFD;
+    src: url('fonts/vazir-fd/Vazir-Light-FD.eot');
+    src: url('fonts/vazir-fd/Vazir-Light-FD.eot?#iefix') format('embedded-opentype'),
+        url('fonts/vazir-fd/Vazir-Light-FD.woff2') format('woff2'),
+        url('fonts/vazir-fd/Vazir-Light-FD.woff') format('woff'),
+        url('fonts/vazir-fd/Vazir-Light-FD.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: VazirFD;
+    src: url('fonts/vazir-fd/Vazir-Thin-FD.eot');
+    src: url('fonts/vazir-fd/Vazir-Thin-FD.eot?#iefix') format('embedded-opentype'),
+        url('fonts/vazir-fd/Vazir-Thin-FD.woff2') format('woff2'),
+        url('fonts/vazir-fd/Vazir-Thin-FD.woff') format('woff'),
+        url('fonts/vazir-fd/Vazir-Thin-FD.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+* {
+    font-family: 'VazirFD' !important;
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    direction: rtl;
+    background-color: #F0F2F5;
+}
+button::-moz-focus-inner {
+    border: 0;
+}
 /* ----------------------- Classes ----------------------- */
+.page-title {
+    width: 100%;
+    /* border: 1px solid #333;
+    background-color: #ccc; */
+    background-color: #D8D8D8;
+    color: #333;
+    padding: 10px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 1.2em;
+}
+
+.page-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    background-color: #F0F2F5;
+    color: #333;
+    min-height: 80vh;
+}
+
+.container-card {
+    position: relative;
+    border-radius: 3px;
+    border: 1px solid #bbb;
+    background-color: white;
+    /* margin: 20px; */
+    width: 100%;
+    /* padding: 20px; */
+}
+
+/* .save-progress-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    padding: 5px;
+} */
+
+.save-button {
+    background-color: #6C757D;
+    color: white;
+    border-radius: 2px;
+    border: none;
+    padding: 5px 10px;
+    font-size: 1.1em;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.change-status-button {
+    background-color: #007BFF;
+    color: white;
+    border-radius: 2px;
+    border: none;
+    padding: 5px 10px;
+    font-size: 1.1em;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.side-pane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
+    padding: 20px;
+}
+
+.side-pane .tab-selector {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.tab-selector__button {
+    font-weight: 500;
+    border: none;
+    background-color: #ddd;
+    box-shadow: inset 0 0 5px #888;
+    padding: 5px;
+}
+
+.annotation-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.create-shape-button {
+    background-color: #6C757D;
+    color: white;
+    border-radius: 2px;
+    border: none;
+    margin-top: 10px;
+    padding: 5px;
+    font-weight: 500;
+}
+
 .playerButton {
     fill: #09c;
     stroke-width: 2px;
     stroke: black;
-    margin-top: 1%;
-    margin-right: 15px;
-    float:left;
     width: 40px;
     height: 40px;
 }
@@ -130,12 +371,16 @@
 .uiElement, .labelContentElement {
     width: 93%;
     border-radius: 2px;
-    margin: 1% auto;
-    padding: 1%;
-    text-align: left;
+    margin: 2% auto;
+    padding: 5%;
+    text-align: right;
     position: relative;
-    border: 3px solid rgba(0,0,0,0);
+    border: 1px solid #333;
     opacity: 0.65;
+}
+
+.uiElement > * {
+    margin-bottom: 8px;
 }
 
 .labelContentElement:active {
@@ -143,7 +388,7 @@
 }
 
 .highlightedUI {
-    border: 3px solid black;
+    border: 1px solid #333;
     opacity: 1;
 }
 
@@ -318,7 +563,7 @@
     overflow: hidden;
     border: 1px solid #CCC;
     white-space: nowrap;
-    font-family: sans-serif;
+    /* font-family: sans-serif; */
     background: #FFF;
     color: #333;
     border-radius: 5px;
@@ -346,11 +591,8 @@
 }
 
 .customizedTab {
-    border-radius: 5px 5px 0px 0px;
-    width: 100%;
-    width: 15%;
-    float: left;
-    margin: 0px 10px;
+    /* border-radius: 5px 5px 0px 0px;
+    width: 100%; */
 }
 
 /* ----------------------- IDs ----------------------- */
@@ -374,25 +616,23 @@
 }
 
 #taskAnnotationCenterPanel {
-    width: 83%;
+    width: 100%;
     height: 100%;
     float: left;
 }
 
 #taskAnnotationRightPanel {
-    height: 100%;
-    width: 15%;
-    float: left;
-    margin: 0px 10px;
+    height: 40vh;
+    width: 100%;
 }
 
 #uiContent, #trackManagement, #aamMenu, #labelsContent {
-    border-bottom: 1px solid black;
+    /* border-bottom: 1px solid black;
     border-right: 1px solid black;
     border-left: 1px solid black;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
-    background-color: #B0C4DE;
+    background-color: #B0C4DE; */
     text-align: center;
 }
 
@@ -406,7 +646,7 @@
     padding: 1em 0;
     height: auto;
     width: 100%;
-    margin: 10px 0px;
+    /* margin: 10px 0px; */
 }
 
 #aamMenu {
@@ -420,7 +660,7 @@
 }
 
 #uiContent, #labelsContent {
-    height: 75.4%;
+    height: 100%;
     width: 100%;
     border-radius: 0px 0px 5px 5px;
     overflow-y: auto;
@@ -430,16 +670,18 @@
     margin: auto;
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 #playerFrame {
-    width: 100%;
-    height: 80%;
-    border: 1px black solid;
-    border-radius: 5px;
-    background-color: #B0C4DE;
+    /* width: 100%; */
+    flex-grow: 1;
+    /* border: 1px black solid;
+    border-radius: 5px; */
     overflow: hidden;
     position: relative;
+    border-bottom: 1px solid #ddd;
 }
 
 #rotationWrapper {
@@ -507,7 +749,12 @@
 
 #playerPanel {
     width: 100%;
-    height: 5%;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin-top: 20px;
 }
 
 #playerSettings {
@@ -529,6 +776,7 @@
 
 #playerProgress {
     -webkit-appearance: none;
+    display: none;
     margin-top: 1.1%;
     background-color: rgba(0,0,0,0);
 }
