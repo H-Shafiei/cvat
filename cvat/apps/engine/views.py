@@ -348,6 +348,9 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     filterset_class = TaskFilter
     ordering_fields = ("id", "name", "owner", "status", "assignee")
 
+    def get_serializer_context(self):
+        return {'request': self.request}
+
     def get_permissions(self):
         http_method = self.request.method
         permissions = [IsAuthenticated]

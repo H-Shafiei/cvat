@@ -7,7 +7,9 @@ import re
 import shutil
 
 from rest_framework import serializers
+from rest_framework.fields import CurrentUserDefault
 from django.contrib.auth.models import User, Group
+from django.db.models import Q
 
 from cvat.apps.engine import models
 from cvat.apps.engine.log import slogger
@@ -62,8 +64,18 @@ class SimpleJobSerializer(serializers.ModelSerializer):
         fields = ('url', 'id', 'assignee', 'status')
 
 class SegmentSerializer(serializers.ModelSerializer):
-    jobs = SimpleJobSerializer(many=True, source='job_set')
+    jobs = serializers.SerializerMethodField()
 
+    def get_jobs(self, obj):
+        serializer_context = {'request': self.context.get('request') }
+        user = self.context['request'].user
+        if user.is_superuser:
+            qs = obj.job_set.all()
+        else:
+            qs = obj.job_set.filter(Q(assignee=user) | Q(assignee__isnull=True))
+        serializer = SimpleJobSerializer(instance=qs, many=True, context=serializer_context)
+        return serializer.data
+            
     class Meta:
         model = models.Segment
         fields = ('start_frame', 'stop_frame', 'jobs')
@@ -195,8 +207,14 @@ class WriteOnceMixin:
 
 class TaskSerializer(WriteOnceMixin, serializers.ModelSerializer):
     labels = LabelSerializer(many=True, source='label_set', partial=True)
-    segments = SegmentSerializer(many=True, source='segment_set', read_only=True)
+    segments = serializers.SerializerMethodField()
     image_quality = serializers.IntegerField(min_value=0, max_value=100)
+
+    def get_segments(self, obj):
+        serializer_context = {'request': self.context.get('request') }
+        qs = obj.segment_set.all()
+        serializer = SegmentSerializer(instance=qs, many=True, read_only=True, context=serializer_context)
+        return serializer.data
 
     class Meta:
         model = models.Task
