@@ -191,6 +191,7 @@ class ShapeCreatorView {
         this._controller = drawerController;
         this._createButton = $('#createShapeButton');
         this._labelSelector = $('#shapeLabelSelector');
+        $('#shapeLabelSelector').select2();
         this._modeSelector = $('#shapeModeSelector');
         this._typeSelector = $('#shapeTypeSelector');
         this._polyShapeSizeInput = $('#polyShapeSize');

@@ -9,6 +9,7 @@
 {% block head_css %}
     {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static 'engine/stylesheet.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'engine/select2.css' %}">
     {% for css_file in css_3rdparty %}
         <link rel="stylesheet" type="text/css" src="{% static css_file %}">
     {% endfor %}
@@ -26,6 +27,7 @@
     <script type="text/javascript" src="{% static 'engine/js/3rdparty/jquery-3.3.1.js' %}"></script>
     <script type="text/javascript" src="{% static 'engine/js/3rdparty/js.cookie.js' %}"></script>
     <script type="text/javascript" src="{% static 'engine/js/3rdparty/jquery.fullscreen.js' %}"></script>
+    <script type="text/javascript" src="{% static 'engine/js/3rdparty/select2.js' %}"></script>
     {% for js_file in js_3rdparty %}
         <script type="text/javascript" src="{% static js_file %}"></script>
     {% endfor %}
