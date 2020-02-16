@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { connect } from 'react-redux';
+import { CombinedState } from "../../reducers/interfaces";
+
 import {
     Row,
     Col,
@@ -15,9 +18,10 @@ import { MenuIcon } from '../../icons';
 
 interface DetailsComponentProps {
     taskInstance: any;
+    user: any;
 }
 
-export default function DetailsComponent(props: DetailsComponentProps): JSX.Element {
+function DetailsComponent(props: DetailsComponentProps): JSX.Element {
     const { taskInstance } = props;
     const { id } = taskInstance;
 
@@ -26,7 +30,8 @@ export default function DetailsComponent(props: DetailsComponentProps): JSX.Elem
             <Col>
                 <Text className='cvat-title'>{`Task details #${id}`}</Text>
             </Col>
-            <Col>
+            {props.user && props.user.isSuperuser ? 
+            (<Col>
                 <Dropdown overlay={
                     (
                         <ActionsMenuContainer
@@ -39,7 +44,17 @@ export default function DetailsComponent(props: DetailsComponentProps): JSX.Elem
                         <Icon className='cvat-menu-icon' component={MenuIcon} />
                     </Button>
                 </Dropdown>
-            </Col>
+            </Col>) : null }
         </Row>
     );
 }
+
+function mapStateToProps(state: CombinedState): any {
+    const { auth } = state;
+    return {
+      user: auth.user
+    };
+  }
+  
+export default connect(mapStateToProps, null)(DetailsComponent);
+  

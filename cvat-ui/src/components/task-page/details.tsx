@@ -214,12 +214,12 @@ export default class DetailsComponent extends React.PureComponent<Props, State> 
                         </Text>
                     )}
                 </Col>
-                <Col span={10}>
+                {/* <Col span={10}>
                     <Text type='secondary'>
-                        Assigned to
+                        Assigned to 
                         { assigneeSelect }
                     </Text>
-                </Col>
+                </Col> */}
             </Row>
         );
     }
@@ -412,7 +412,7 @@ export default class DetailsComponent extends React.PureComponent<Props, State> 
                         { this.renderUsers() }
                         { this.renderBugTracker() }
                         { this.renderDatasetRepository() }
-                        { this.renderLabelsEditor() }
+                        {/* { this.renderLabelsEditor() } */}
                     </Col>
                 </Row>
             </div>

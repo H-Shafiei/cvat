@@ -1,6 +1,8 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { CombinedState } from "../../reducers/interfaces";
 
 import Text from 'antd/lib/typography/Text';
 import {
@@ -24,6 +26,7 @@ export interface TaskItemProps {
     deleted: boolean;
     hidden: boolean;
     activeInference: ActiveInference | null;
+    user: any;
 }
 
 class TaskItemComponent extends React.PureComponent<TaskItemProps & RouteComponentProps> {
@@ -169,14 +172,15 @@ class TaskItemComponent extends React.PureComponent<TaskItemProps & RouteCompone
                         </Button>
                     </Col>
                 </Row>
-                <Row type='flex' justify='end'>
+                {this.props.user && this.props.user.isSuperuser ? 
+                (<Row type='flex' justify='end'>
                     <Col>
                         <Text className='cvat-text-color'>Actions</Text>
                         <Dropdown overlay={<ActionsMenuContainer taskInstance={taskInstance} />}>
                             <Icon className='cvat-menu-icon' component={MenuIcon} />
                         </Dropdown>
                     </Col>
-                </Row>
+                </Row>) : null }
             </Col>
         );
     }
@@ -207,4 +211,11 @@ class TaskItemComponent extends React.PureComponent<TaskItemProps & RouteCompone
     }
 }
 
-export default withRouter(TaskItemComponent);
+function mapStateToProps(state: CombinedState): any {
+    const { auth } = state;
+    return {
+      user: auth.user
+    };
+  }
+  
+export default withRouter(connect(mapStateToProps, null)(TaskItemComponent));

@@ -1,4 +1,8 @@
 import React from 'react';
+
+import { connect } from 'react-redux';
+import { CombinedState } from "../../reducers/interfaces";
+
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
 
@@ -14,6 +18,7 @@ import Text from 'antd/lib/typography/Text';
 interface VisibleTopBarProps {
     onSearch: (value: string) => void;
     searchValue: string;
+    user: any;
 }
 
 function TopBarComponent(props: VisibleTopBarProps & RouteComponentProps): JSX.Element {
@@ -40,7 +45,8 @@ function TopBarComponent(props: VisibleTopBarProps & RouteComponentProps): JSX.E
                         placeholder='Search'
                     />
                 </Col>
-                <Col
+                {props.user && props.user.isSuperuser ? 
+                (<Col
                     md={{ span: 11 }}
                     lg={{ span: 9 }}
                     xl={{ span: 8 }}
@@ -56,10 +62,18 @@ function TopBarComponent(props: VisibleTopBarProps & RouteComponentProps): JSX.E
                     >
                          Create new task
                     </Button>
-                </Col>
+                </Col>) : null }
             </Row>
         </>
     );
 }
 
-export default withRouter(TopBarComponent);
+
+function mapStateToProps(state: CombinedState): any {
+    const { auth } = state;
+    return {
+      user: auth.user
+    };
+  }
+  
+export default withRouter(connect(mapStateToProps, null)(TopBarComponent));
