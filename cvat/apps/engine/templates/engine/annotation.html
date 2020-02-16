@@ -76,6 +76,7 @@
     </span>
 </div>
 <div class="page-body">
+    {% if job.status == 'annotation' %}
     <div class="side-pane">
         <div class="container-card">
             <div id="trackManagement">
@@ -121,6 +122,7 @@
         <button id="saveButton" class="save-button"> ذخیره تغییرات </button>
         <button id="changeStatusButton" class="change-status-button"> ارسال برای بازبینی </button>
     </div>
+    {% endif %}
     <div class="annotation-box">
         <div id="taskAnnotationCenterPanel">
             <div id="player" class="container-card">
@@ -196,6 +198,9 @@
                     </svg>
                     <input type = "range" id = "playerProgress"/>
                 </div>  <!-- END of PLAYER PANEL -->
+                <span>
+                    <a class="tasks-return-link" href="{{ ui_url }}/tasks/{{ job.segment.task.pk }}"> بازگشت به صفحه کارها </a>
+                </span>
                 <!-- <div style="margin-top: 20px"> -->
                     <!-- <button id="menuButton" class="regular h2"> Open Menu </button> -->
                     <!-- <label class="regular h2" style="margin-left: 50px"> Filter: </label>

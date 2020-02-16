@@ -370,6 +370,26 @@ function setupMenu(job, task, shapeCollectionModel,
         }
     });
 
+    $('#changeStatusButton').on('click', () => {
+        const message = 'آیا تمامی عکس‌های این کار را برچسب زده اید و از اتمام کار مطمئن هستید؟';
+        userConfirm(message, async () => {
+            try {
+                const jobCopy = JSON.parse(JSON.stringify(job));
+                jobCopy.status = 'validation';
+
+                await $.ajax({
+                    url: `/api/v1/jobs/${window.cvat.job.id}`,
+                    type: 'PATCH',
+                    data: JSON.stringify(jobCopy),
+                    contentType: 'application/json',
+                });
+                window.location.href = `${window.UI_URL}/tasks/${window.cvat.job.task_id}`;
+            } catch (error) {
+                showMessage(error.message);
+            }
+        });
+    });
+
     const { shortkeys } = window.cvat.config;
     $('#helpButton').on('click', () => {
         hide();

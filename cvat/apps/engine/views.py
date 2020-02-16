@@ -82,11 +82,13 @@ def dispatch_request(request):
             query_string=True
         )(request)
     elif request.method == 'GET' and 'id' in request.GET and request.path == '/':
+        job = Job.objects.get(id=request.GET['id'])
         return render(request, 'engine/annotation.html', {
             'css_3rdparty': CSS_3RDPARTY.get('engine', []),
             'js_3rdparty': JS_3RDPARTY.get('engine', []),
             'status_list': [str(i) for i in StatusChoice],
-            'ui_url': settings.UI_URL
+            'job': job,
+            'ui_url': settings.UI_URL,
         })
     else:
         return HttpResponseNotFound()

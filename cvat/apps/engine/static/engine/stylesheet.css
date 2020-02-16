@@ -188,7 +188,7 @@ button::-moz-focus-inner {
 } */
 
 .save-button {
-    background-color: #6C757D;
+    background-color: #007BFF;
     color: white;
     border-radius: 2px;
     border: none;
@@ -199,7 +199,7 @@ button::-moz-focus-inner {
 }
 
 .change-status-button {
-    background-color: #007BFF;
+    background-color: rgb(200, 20, 20);
     color: white;
     border-radius: 2px;
     border: none;
@@ -207,6 +207,12 @@ button::-moz-focus-inner {
     font-size: 1.1em;
     margin-top: 20px;
     width: 100%;
+}
+
+.tasks-return-link {
+    text-align: center;
+    display: inherit;
+    margin-top: 10px;
 }
 
 .side-pane {
@@ -240,7 +246,7 @@ button::-moz-focus-inner {
 }
 
 .create-shape-button {
-    background-color: #6C757D;
+    background-color: #007BFF;
     color: white;
     border-radius: 2px;
     border: none;
