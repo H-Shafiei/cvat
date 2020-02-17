@@ -125,14 +125,14 @@ class Config {
             },
 
             next_frame: {
-                value: 'f',
-                view_value: 'F',
+                value: 'right',
+                view_value: 'Right Arrow',
                 description: 'move to next player frame',
             },
 
             prev_frame: {
-                value: 'd',
-                view_value: 'D',
+                value: 'left',
+                view_value: 'Left Arrow',
                 description: 'move to previous player frame',
             },
 

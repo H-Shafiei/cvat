@@ -2076,8 +2076,8 @@ class ShapeView extends Listener {
                 select.setAttribute('title', `
                     ${shortkeys['change_shape_label'].view_value} - ${shortkeys['change_shape_label'].description}`);
 
-                block.appendChild(htmlLabel);
-                block.appendChild(select);
+                // block.appendChild(htmlLabel);
+                // block.appendChild(select);
 
                 this._uis.changelabel = select;
                 return block;
