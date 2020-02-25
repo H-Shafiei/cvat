@@ -2873,6 +2873,7 @@ ShapeView.labels = function() {
     if (!ShapeView._labels) {
         ShapeView._labels = window.cvat.labelsInfo.labels();
     }
+    ShapeView._labels = window.cvat.labelsInfo.labels();
     return ShapeView._labels;
 };
 

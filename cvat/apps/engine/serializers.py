@@ -206,7 +206,8 @@ class WriteOnceMixin:
         return extra_kwargs
 
 class TaskSerializer(WriteOnceMixin, serializers.ModelSerializer):
-    labels = LabelSerializer(many=True, source='label_set', partial=True)
+    # labels = LabelSerializer(many=True, source='label_set', partial=True)
+    labels = serializers.SerializerMethodField()
     segments = serializers.SerializerMethodField()
     image_quality = serializers.IntegerField(min_value=0, max_value=100)
 
@@ -214,6 +215,14 @@ class TaskSerializer(WriteOnceMixin, serializers.ModelSerializer):
         serializer_context = {'request': self.context.get('request') }
         qs = obj.segment_set.all()
         serializer = SegmentSerializer(instance=qs, many=True, read_only=True, context=serializer_context)
+        return serializer.data
+    
+    def get_labels(self, obj):
+        segments = obj.segment_set.all()
+        jobs = models.Job.objects.filter(segment__in=segments)
+        label_ids = models.LabeledShape.objects.filter(job__in=jobs).values_list('label', flat=True)
+        labels = models.Label.objects.filter(pk__in=label_ids)
+        serializer = LabelSerializer(instance=labels, many=True, source='label_set', partial=True)
         return serializer.data
 
     class Meta:

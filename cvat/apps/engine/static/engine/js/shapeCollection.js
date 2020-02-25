@@ -1148,6 +1148,97 @@ class ShapeCollectionView {
             "fill-opacity": 0
         };
 
+        this._drawnLabelBoxes = Object.keys(window.cvat.labelsInfo.labels());
+
+        this._createLabelBox = function(labels, labelId) {
+            if (labelId in this._drawnLabelBoxes) {
+                return;
+            }
+            this._drawnLabelBoxes.push(labelId);
+            let lockButton = $(`<button> </button>`)
+                .addClass('graphicButton lockButton')
+                .attr('title', 'Switch lock for all object with same label')
+                .on('click', () => {
+                    this._controller.switchLabelLock(+labelId);
+                });
+
+            lockButton[0].updateState = function(button, labelId) {
+                let models = this._currentModels.filter((el) => el.label === labelId);
+                let locked = true;
+                for (let model of models) {
+                    locked = locked && model.lock;
+                    if (!locked) {
+                        break;
+                    }
+                }
+
+                if (!locked) {
+                    button.removeClass('locked');
+                }
+                else {
+                    button.addClass('locked');
+                }
+            }.bind(this, lockButton, +labelId);
+
+            let hiddenButton = $(`<button> </button>`)
+                .addClass('graphicButton hiddenButton')
+                .attr('title', 'Switch hide for all object with same label')
+                .on('click', () => {
+                    this._controller.switchLabelHide(+labelId);
+                });
+
+            hiddenButton[0].updateState = function(button, labelId) {
+                let models = this._currentModels.filter((el) => el.label === labelId);
+                let hiddenShape = true;
+                let hiddenText = true;
+                for (let model of models) {
+                    hiddenShape = hiddenShape && model.hiddenShape;
+                    hiddenText = hiddenText && model.hiddenText;
+                    if (!hiddenShape && !hiddenText) {
+                        break;
+                    }
+                }
+
+                if (hiddenShape) {
+                    button.removeClass('hiddenText');
+                    button.addClass('hiddenShape');
+                }
+                else if (hiddenText) {
+                    button.addClass('hiddenText');
+                    button.removeClass('hiddenShape');
+                }
+                else {
+                    button.removeClass('hiddenText hiddenShape');
+                }
+            }.bind(this, hiddenButton, +labelId);
+
+            let buttonBlock = $('<center> </center>')
+                .append(lockButton).append(hiddenButton)
+                .addClass('buttonBlockOfLabelUI');
+
+            let title = $(`<label> ${labels[labelId]} </label>`);
+
+            let mainDiv = $('<div> </div>').addClass('labelContentElement h2 regular hidden')
+                .css({
+                    'background-color': collectionController.colorsByGroup(+window.cvat.labelsInfo.labelColorIdx(+labelId)),
+                }).attr({
+                    'label_id': labelId,
+                }).on('mouseover mouseup', () => {
+                    mainDiv.addClass('highlightedUI');
+                    collectionModel.selectAllWithLabel(+labelId);
+                }).on('mouseout mousedown', () => {
+                    mainDiv.removeClass('highlightedUI');
+                    collectionModel.deselectAll();
+                }).append(title).append(buttonBlock);
+
+            mainDiv[0].updateState = function() {
+                lockButton[0].updateState();
+                hiddenButton[0].updateState();
+            };
+
+            this._labelsContent.append(mainDiv);
+        }
+
         this._showAllInterpolationBox.on('change', (e) => {
             this._controller.setShowAllInterpolation(e.target.checked);
         });
@@ -1322,88 +1413,7 @@ class ShapeCollectionView {
 
         let labels = window.cvat.labelsInfo.labels();
         for (let labelId in labels) {
-            let lockButton = $(`<button> </button>`)
-                .addClass('graphicButton lockButton')
-                .attr('title', 'Switch lock for all object with same label')
-                .on('click', () => {
-                    this._controller.switchLabelLock(+labelId);
-                });
-
-            lockButton[0].updateState = function(button, labelId) {
-                let models = this._currentModels.filter((el) => el.label === labelId);
-                let locked = true;
-                for (let model of models) {
-                    locked = locked && model.lock;
-                    if (!locked) {
-                        break;
-                    }
-                }
-
-                if (!locked) {
-                    button.removeClass('locked');
-                }
-                else {
-                    button.addClass('locked');
-                }
-            }.bind(this, lockButton, +labelId);
-
-            let hiddenButton = $(`<button> </button>`)
-                .addClass('graphicButton hiddenButton')
-                .attr('title', 'Switch hide for all object with same label')
-                .on('click', () => {
-                    this._controller.switchLabelHide(+labelId);
-                });
-
-            hiddenButton[0].updateState = function(button, labelId) {
-                let models = this._currentModels.filter((el) => el.label === labelId);
-                let hiddenShape = true;
-                let hiddenText = true;
-                for (let model of models) {
-                    hiddenShape = hiddenShape && model.hiddenShape;
-                    hiddenText = hiddenText && model.hiddenText;
-                    if (!hiddenShape && !hiddenText) {
-                        break;
-                    }
-                }
-
-                if (hiddenShape) {
-                    button.removeClass('hiddenText');
-                    button.addClass('hiddenShape');
-                }
-                else if (hiddenText) {
-                    button.addClass('hiddenText');
-                    button.removeClass('hiddenShape');
-                }
-                else {
-                    button.removeClass('hiddenText hiddenShape');
-                }
-            }.bind(this, hiddenButton, +labelId);
-
-            let buttonBlock = $('<center> </center>')
-                .append(lockButton).append(hiddenButton)
-                .addClass('buttonBlockOfLabelUI');
-
-            let title = $(`<label> ${labels[labelId]} </label>`);
-
-            let mainDiv = $('<div> </div>').addClass('labelContentElement h2 regular hidden')
-                .css({
-                    'background-color': collectionController.colorsByGroup(+window.cvat.labelsInfo.labelColorIdx(+labelId)),
-                }).attr({
-                    'label_id': labelId,
-                }).on('mouseover mouseup', () => {
-                    mainDiv.addClass('highlightedUI');
-                    collectionModel.selectAllWithLabel(+labelId);
-                }).on('mouseout mousedown', () => {
-                    mainDiv.removeClass('highlightedUI');
-                    collectionModel.deselectAll();
-                }).append(title).append(buttonBlock);
-
-            mainDiv[0].updateState = function() {
-                lockButton[0].updateState();
-                hiddenButton[0].updateState();
-            };
-
-            this._labelsContent.append(mainDiv);
+            this._createLabelBox.call(this, labels, labelId);
         }
 
         let sidePanelObjectsButton = $('#sidePanelObjectsButton');
@@ -1428,6 +1438,10 @@ class ShapeCollectionView {
         this._labelsContent.find('.labelContentElement').addClass('hidden');
         let labels = new Set(this._currentModels.map((el) => el.label));
         for (let label of labels) {
+            let strLabel = String(label);
+            if (!this._drawnLabelBoxes.includes(strLabel)) {
+                this._createLabelBox(window.cvat.labelsInfo.labels(), strLabel);
+            }
             this._labelsContent.find(`.labelContentElement[label_id="${label}"]`).removeClass('hidden');
         }
         this._updateLabelUIsState();

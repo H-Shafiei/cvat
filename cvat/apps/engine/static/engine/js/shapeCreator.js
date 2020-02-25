@@ -191,7 +191,6 @@ class ShapeCreatorView {
         this._controller = drawerController;
         this._createButton = $('#createShapeButton');
         this._labelSelector = $('#shapeLabelSelector');
-        $('#shapeLabelSelector').select2();
         this._modeSelector = $('#shapeModeSelector');
         this._typeSelector = $('#shapeTypeSelector');
         this._polyShapeSizeInput = $('#polyShapeSize');
@@ -199,7 +198,38 @@ class ShapeCreatorView {
         this._frameContent = SVG.adopt($('#frameContent')[0]);
         this._frameText = SVG.adopt($('#frameText')[0]);
         this._playerFrame = $('#playerFrame');
-        this._createButton.on('click', () => this._controller.switchCreateMode(false));
+        this._createButton.on('click', () => {
+            this._controller.switchCreateMode(false);
+
+            function convertAttribute(attribute) {
+                return {
+                    mutable: attribute.mutable,
+                    type: attribute.input_type,
+                    name: attribute.name,
+                    values: attribute.input_type === 'checkbox'
+                        ? [attribute.values[0].toLowerCase() !== 'false'] : attribute.values,
+                };
+            }
+
+            var label = $('#shapeLabelSelector').find(':selected').data('pure-data');
+
+            var labels = window.cvat.labelsInfo._labels;
+            var attributes = window.cvat.labelsInfo._attributes;
+            var colorIdxs = window.cvat.labelsInfo._colorIdxs;
+
+            labels[label.id] = {
+                name: label.name,
+                attributes: {},
+            };
+
+            for (const attr of label.attributes) {
+                attributes[attr.id] = convertAttribute(attr);
+                labels[label.id].attributes[attr.id] = attributes[attr.id];
+            }
+
+            colorIdxs[label.id] = +label.id;
+
+        });
         this._drawInstance = null;
         this._aim = null;
         this._aimCoord = {
@@ -222,13 +252,36 @@ class ShapeCreatorView {
 
         const labels = window.cvat.labelsInfo.labels();
         const labelsKeys = Object.keys(labels);
-        for (let i = 0; i < labelsKeys.length; i += 1) {
-            this._labelSelector.append(
-                // eslint-disable-next-line
-                $(`<option value=${labelsKeys[i]}> ${labels[labelsKeys[i]].normalize()} </option>`)
-            );
-        }
-        this._labelSelector.val(labelsKeys[0]);
+        // for (let i = 0; i < labelsKeys.length; i += 1) {
+        //     this._labelSelector.append(
+        //         // eslint-disable-next-line
+        //         $(`<option value=${labelsKeys[i]}> ${labels[labelsKeys[i]].normalize()} </option>`)
+        //     );
+        // }
+        this._labelSelector.select2({
+            dir: "rtl",
+            ajax: {
+                url: `/api/v1/tasks/${window.cvat.job.task_id}/labels`,
+                delay: 250,
+                processResults: function (data) {
+                    // Transforms the top-level key of the response object from 'items' to 'results'
+                    $.map(data, function(obj){
+                        obj.text = obj.name;
+                        return obj;
+                    });
+                    return {
+                        results: data,
+                    }
+                    }
+            },
+            placeholder: 'برچسب را تایپ کنید',
+            minimumInputLength: 2,
+            templateSelection: function (data, container) {
+                // Add custom attributes to the <option> tag for the selected option
+                $(data.element).attr('data-pure-data', JSON.stringify(data));
+                return data.text;
+            }
+        });
 
         this._typeSelector.val('box');
         this._typeSelector.on('change', (e) => {

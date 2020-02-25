@@ -11,13 +11,13 @@ class Config {
         this._username = '_default_';
         this._shortkeys = {
             switch_lock_property: {
-                value: 'l',
+                value: 'ctrl+shift+l',
                 view_value: 'L',
                 description: 'switch lock property for active shape',
             },
 
             switch_all_lock_property: {
-                value: 't l',
+                value: 'ctrl+shift+t ctrl+shift+l',
                 view_value: 'T + L',
                 description: 'switch lock property for all shapes on current frame',
             },
@@ -29,19 +29,19 @@ class Config {
             },
 
             switch_draw_mode: {
-                value: 'n',
+                value: 'ctrl+shift+n',
                 view_value: 'N',
                 description: 'start draw / stop draw',
             },
 
             switch_merge_mode: {
-                value: 'm',
+                value: 'ctrl+shift+m',
                 view_value: 'M',
                 description: 'start merge / apply changes',
             },
 
             switch_group_mode: {
-                value: 'g',
+                value: 'ctrl+shift+g',
                 view_value: 'G',
                 description: 'start group / apply changes',
             },
@@ -65,7 +65,7 @@ class Config {
             },
 
             change_shape_color: {
-                value: 'enter',
+                value: 'ctrl+shift+enter',
                 view_value: 'Enter',
                 description: 'change color for highlighted shape',
             },
@@ -89,25 +89,25 @@ class Config {
             },
 
             switch_hide_mode: {
-                value: 'h',
+                value: 'ctrl+shift+h',
                 view_value: 'H',
                 description: 'switch hide mode for active shape',
             },
 
             switch_active_keyframe: {
-                value: 'k',
+                value: 'ctrl+shift+k',
                 view_value: 'K',
                 description: 'switch keyframe property for active shape',
             },
 
             switch_active_outside: {
-                value: 'o',
+                value: 'ctrl+shift+o',
                 view_value: 'O',
                 description: 'switch outside property for active shape',
             },
 
             switch_all_hide_mode: {
-                value: 't h',
+                value: 'ctrl+shift+t ctrl+shift+h',
                 view_value: 'T + H',
                 description: 'switch hide mode for all shapes',
             },
@@ -125,56 +125,56 @@ class Config {
             },
 
             next_frame: {
-                value: 'right',
+                value: 'ctrl+shift+right',
                 view_value: 'Right Arrow',
                 description: 'move to next player frame',
             },
 
             prev_frame: {
-                value: 'left',
+                value: 'ctrl+shift+left',
                 view_value: 'Left Arrow',
                 description: 'move to previous player frame',
             },
 
             forward_frame: {
-                value: 'v',
+                value: 'ctrl+shift+v',
                 view_value: 'V',
                 description: 'move forward several frames',
             },
 
             backward_frame: {
-                value: 'c',
+                value: 'ctrl+shift+c',
                 view_value: 'C',
                 description: 'move backward several frames',
             },
 
             next_key_frame: {
-                value: 'r',
+                value: 'ctrl+shift+r',
                 view_value: 'R',
                 description: 'move to next key frame of highlighted track',
             },
 
             prev_key_frame: {
-                value: 'e',
+                value: 'ctrl+shift+e',
                 view_value: 'E',
                 description: 'move to previous key frame of highlighted track',
             },
 
             prev_filter_frame: {
-                value: 'left',
+                value: 'ctrl+shift+left',
                 view_value: 'Left Arrow',
                 description: 'move to prev frame which satisfies the filter',
             },
 
             next_filter_frame: {
-                value: 'right',
+                value: 'ctrl+shift+right',
                 view_value: 'Right Arrow',
                 description: 'move to next frame which satisfies the filter',
             },
 
             play_pause: {
-                value: 'space',
-                view_value: 'Space',
+                value: 'f12',
+                view_value: 'F12',
                 description: 'switch play / pause of player',
             },
 
@@ -221,13 +221,13 @@ class Config {
             },
 
             aam_next_attribute: {
-                value: 'down',
+                value: 'ctrl+shift+down',
                 view_value: 'Down Arrow',
                 description: 'move to next attribute in attribute annotation mode',
             },
 
             aam_prev_attribute: {
-                value: 'up',
+                value: 'ctrl+shift+up',
                 view_value: 'Up Arrow',
                 description: 'move to previous attribute in attribute annotation mode',
             },
@@ -281,7 +281,7 @@ class Config {
             },
 
             clockwise_rotation: {
-                value: 'ctrl+r',
+                value: 'ctrl+alt+r',
                 view_value: 'Ctrl + R',
                 description: 'clockwise image rotation',
             },

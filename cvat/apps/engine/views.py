@@ -39,7 +39,7 @@ from cvat.apps.engine.serializers import (TaskSerializer, UserSerializer,
    ExceptionSerializer, AboutSerializer, JobSerializer, ImageMetaSerializer,
    RqStatusSerializer, TaskDataSerializer, LabeledDataSerializer,
    PluginSerializer, FileInfoSerializer, LogEventSerializer,
-   ProjectSerializer, BasicUserSerializer)
+   ProjectSerializer, BasicUserSerializer, LabelSerializer)
 from cvat.apps.annotation.serializers import AnnotationFileSerializer, AnnotationFormatSerializer
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -342,7 +342,7 @@ class DjangoFilterInspector(CoreAPICompatInspector):
 @method_decorator(name='partial_update', decorator=swagger_auto_schema(operation_summary='Methods does a partial update of chosen fields in a task'))
 class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
     queryset = Task.objects.all().prefetch_related(
-            "label_set__attributespec_set",
+            # "label_set__attributespec_set",
             "segment_set__job_set",
         ).order_by('-id')
     serializer_class = TaskSerializer
@@ -587,6 +587,19 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             slogger.task[pk].error(
                 "cannot get frame #{}".format(frame), exc_info=True)
             return HttpResponseBadRequest(str(e))
+
+    @action(detail=True, methods=['GET'], serializer_class=LabelSerializer,
+        url_path='labels')
+    def labels(self, request, pk):
+        query = request.GET['q']
+        # sanitize string
+        query = query.replace('ی', 'ي')
+
+        queryset = models.Label.objects.filter(name__contains=query, task=pk)
+
+        serializer = LabelSerializer(queryset, many=True)
+
+        return Response(serializer.data)
 
     @swagger_auto_schema(method='get', operation_summary='Export task as a dataset in a specific format',
         manual_parameters=[openapi.Parameter('action', in_=openapi.IN_QUERY,
