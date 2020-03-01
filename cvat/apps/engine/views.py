@@ -11,6 +11,7 @@ import shutil
 from datetime import datetime
 from tempfile import mkstemp
 
+from django.db.models.functions import Length
 from django.views.generic import RedirectView
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render
@@ -595,7 +596,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
         # sanitize string
         query = query.replace('ی', 'ي')
 
-        queryset = models.Label.objects.filter(name__contains=query, task=pk)
+        queryset = models.Label.objects.filter(name__contains=query, task=pk).order_by(Length('name'))
 
         serializer = LabelSerializer(queryset, many=True)
 
