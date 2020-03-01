@@ -7,6 +7,7 @@ from enum import Enum
 import re
 import shlex
 import os
+import json
 
 from django.db import models
 from django.conf import settings
@@ -199,6 +200,21 @@ class Label(models.Model):
 
     def __str__(self):
         return self.name
+
+    @classmethod
+    def get_farsnet_labels_list(cls):
+        with open('farsnet-words-list.json') as f:
+            label_list = json.load(f)
+            label_list.sort(key = len)
+            return label_list
+
+    @classmethod
+    def create_farsnet_labels(cls, task):
+        label_list = cls.get_farsnet_labels_list()
+        label_l = []
+        for label in label_list:
+            label_l.append(cls(task=task, name=label))
+        return cls.objects.bulk_create(label_l)
 
     class Meta:
         default_permissions = ()

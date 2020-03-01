@@ -245,16 +245,16 @@ class TaskSerializer(WriteOnceMixin, serializers.ModelSerializer):
 
     # pylint: disable=no-self-use
     def create(self, validated_data):
-        labels = validated_data.pop('label_set')
+        # labels = validated_data.pop('label_set')
         db_task = models.Task.objects.create(size=0, **validated_data)
         db_task.start_frame = validated_data.get('start_frame', 0)
         db_task.stop_frame = validated_data.get('stop_frame', 0)
         db_task.frame_filter = validated_data.get('frame_filter', '')
-        for label in labels:
-            attributes = label.pop('attributespec_set')
-            db_label = models.Label.objects.create(task=db_task, **label)
-            for attr in attributes:
-                models.AttributeSpec.objects.create(label=db_label, **attr)
+        # for label in labels:
+        #     attributes = label.pop('attributespec_set')
+        #     db_label = models.Label.objects.create(task=db_task, **label)
+        #     for attr in attributes:
+        #         models.AttributeSpec.objects.create(label=db_label, **attr)
 
         task_path = db_task.get_task_dirname()
         if os.path.isdir(task_path):
@@ -281,33 +281,33 @@ class TaskSerializer(WriteOnceMixin, serializers.ModelSerializer):
         instance.stop_frame = validated_data.get('stop_frame', instance.stop_frame)
         instance.frame_filter = validated_data.get('frame_filter', instance.frame_filter)
         instance.project = validated_data.get('project', instance.project)
-        labels = validated_data.get('label_set', [])
-        for label in labels:
-            attributes = label.pop('attributespec_set', [])
-            (db_label, created) = models.Label.objects.get_or_create(task=instance,
-                name=label['name'])
-            if created:
-                slogger.task[instance.id].info("New {} label was created"
-                    .format(db_label.name))
-            else:
-                slogger.task[instance.id].info("{} label was updated"
-                    .format(db_label.name))
-            for attr in attributes:
-                (db_attr, created) = models.AttributeSpec.objects.get_or_create(
-                    label=db_label, name=attr['name'], defaults=attr)
-                if created:
-                    slogger.task[instance.id].info("New {} attribute for {} label was created"
-                        .format(db_attr.name, db_label.name))
-                else:
-                    slogger.task[instance.id].info("{} attribute for {} label was updated"
-                        .format(db_attr.name, db_label.name))
+        # labels = validated_data.get('label_set', [])
+        # for label in labels:
+        #     attributes = label.pop('attributespec_set', [])
+        #     (db_label, created) = models.Label.objects.get_or_create(task=instance,
+        #         name=label['name'])
+        #     if created:
+        #         slogger.task[instance.id].info("New {} label was created"
+        #             .format(db_label.name))
+        #     else:
+        #         slogger.task[instance.id].info("{} label was updated"
+        #             .format(db_label.name))
+        #     for attr in attributes:
+        #         (db_attr, created) = models.AttributeSpec.objects.get_or_create(
+        #             label=db_label, name=attr['name'], defaults=attr)
+        #         if created:
+        #             slogger.task[instance.id].info("New {} attribute for {} label was created"
+        #                 .format(db_attr.name, db_label.name))
+        #         else:
+        #             slogger.task[instance.id].info("{} attribute for {} label was updated"
+        #                 .format(db_attr.name, db_label.name))
 
-                    # FIXME: need to update only "safe" fields
-                    db_attr.default_value = attr.get('default_value', db_attr.default_value)
-                    db_attr.mutable = attr.get('mutable', db_attr.mutable)
-                    db_attr.input_type = attr.get('input_type', db_attr.input_type)
-                    db_attr.values = attr.get('values', db_attr.values)
-                    db_attr.save()
+        #             # FIXME: need to update only "safe" fields
+        #             db_attr.default_value = attr.get('default_value', db_attr.default_value)
+        #             db_attr.mutable = attr.get('mutable', db_attr.mutable)
+        #             db_attr.input_type = attr.get('input_type', db_attr.input_type)
+        #             db_attr.values = attr.get('values', db_attr.values)
+        #             db_attr.save()
 
         instance.save()
         return instance
