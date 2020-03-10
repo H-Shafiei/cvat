@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+{% load static compress %}
+<html>
+  <head>
+    <title>عملکرد اپراتورها</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'engine/base.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'engine/stylesheet.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'engine/persian-datepicker.css' %}"
+    />
+    <script
+      type="text/javascript"
+      src="{% static 'engine/js/3rdparty/jquery-3.3.1.js' %}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{% static 'engine/js/3rdparty/persian-date.js' %}"
+    ></script>
+    <script
+      type="text/javascript"
+      src="{% static 'engine/js/3rdparty/persian-datepicker.js' %}"
+    ></script>
+    <style>
+      .page-title {
+        /* margin-top: 50px; */
+      }
+      .date-picker-container {
+        margin-top: 80px;
+      }
+      .userstats-table {
+        text-align: center;
+        margin-top: 30px;
+      }
+      .userstats-table th {
+        padding: 5px;
+        border: 1px solid #888;
+        background-color: #bbb;
+      }
+      .userstats-table td {
+        padding: 5px;
+        border: 1px solid #bbb;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-title">
+      <span>
+        عملکرد اپراتورها در وظیفه {{ task_id }}
+      </span>
+    </div>
+    <div class="date-picker-container">
+      <form method="GET" action="">
+        <label>تاریخ شروع</label>
+        <input
+          type="text"
+          name="start_date"
+          class="start-date-picker"
+          value="{{start_date}}"
+        />
+        <label>تاریخ پایان</label>
+        <input
+          type="text"
+          name="end_date"
+          class="end-date-picker"
+          value="{{end_date}}"
+        />
+        <button type="submit">اعمال فیلتر</button>
+      </form>
+    </div>
+    <table class="userstats-table">
+      <tr>
+        <th>نام کاربری</th>
+        <th>تعداد کارهای تمام شده</th>
+        <th>تعداد عکس‌ها</th>
+        <th>تعداد قاب‌ها</th>
+      </tr>
+
+      {% for user_stat in user_stats %}
+      <tr>
+        <td>
+          {{ user_stat.assignee__username }}
+        </td>
+        <td>
+          {{ user_stat.total_jobs }}
+        </td>
+        <td>
+          {{ user_stat.total_images }}
+        </td>
+        <td>
+          {{ user_stat.total_shapes }}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+        const commonConfig = {
+          autoClose: true,
+          format: "YYYY-MM-DD",
+          calendar: {
+            persian: {
+              locale: "en"
+            }
+          },
+          initialValueType: "persian",
+          toolbox: {
+            calendarSwitch: {
+              enabled: false
+            }
+          }
+        };
+        $(".start-date-picker").pDatepicker(commonConfig);
+        $(".end-date-picker").pDatepicker(commonConfig);
+      });
+    </script>
+  </body>
+</html>

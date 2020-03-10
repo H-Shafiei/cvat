@@ -16,6 +16,12 @@ import Text from 'antd/lib/typography/Text';
 import ActionsMenuContainer from '../../containers/actions-menu/actions-menu';
 import { MenuIcon } from '../../icons';
 
+import getCore from "../../core";
+
+const core = getCore();
+
+const baseURL = core.config.backendAPI;
+
 interface DetailsComponentProps {
     taskInstance: any;
     user: any;
@@ -31,7 +37,13 @@ function DetailsComponent(props: DetailsComponentProps): JSX.Element {
                 <Text className='cvat-title'>{`Task details #${id}`}</Text>
             </Col>
             {props.user && props.user.isSuperuser ? 
-            (<Col>
+            (<>
+            <Col>
+                <Button size='large'>
+                    <a href={`${baseURL}/tasks/${id}/user_stats`} target="_blank">Annotators' Stats</a>
+                </Button>
+            </Col>
+            <Col>
                 <Dropdown overlay={
                     (
                         <ActionsMenuContainer
@@ -44,7 +56,7 @@ function DetailsComponent(props: DetailsComponentProps): JSX.Element {
                         <Icon className='cvat-menu-icon' component={MenuIcon} />
                     </Button>
                 </Dropdown>
-            </Col>) : null }
+            </Col></>) : null }
         </Row>
     );
 }

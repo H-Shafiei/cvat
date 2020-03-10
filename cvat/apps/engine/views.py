@@ -12,6 +12,7 @@ from datetime import datetime
 from tempfile import mkstemp
 
 from django.db.models.functions import Length
+from django.db.models import Count, OuterRef, Subquery, F, Sum
 from django.views.generic import RedirectView
 from django.http import HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render
@@ -27,6 +28,7 @@ from rest_framework.decorators import action
 from rest_framework import mixins
 from django_filters import rest_framework as filters
 import django_rq
+import khayyam
 from django.db import IntegrityError
 from django.utils import timezone
 
@@ -601,6 +603,54 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
         serializer = LabelSerializer(queryset, many=True)
 
         return Response(serializer.data)
+
+    @action(detail=True, methods=['GET'], url_path='user_stats')
+    def stats(self, request, pk):
+
+        task = self.get_object()
+        
+        # prepare annotations
+        last_commits = models.JobCommit.objects.filter(job=OuterRef('pk')).order_by('-timestamp')
+        last_commit_subquery = Subquery(last_commits.values('timestamp')[:1])
+
+        labeled_shapes = models.LabeledShape.objects.filter(job=OuterRef('pk')).values('job')
+        total_shapes = labeled_shapes.annotate(count=Count('pk')).values('count')
+
+        jobs = Job.objects.filter(segment__task=pk, status__in=[models.StatusChoice.VALIDATION, models.StatusChoice.COMPLETED]).annotate(
+                    image_count=F('segment__stop_frame') - F('segment__start_frame') + 1, 
+                    # first_commit_date=first_commit_subquery, 
+                    last_commit_date=last_commit_subquery,
+                    shapes_count=Subquery(total_shapes)
+                )
+        
+        start_date_str = request.GET.get('start_date', '')
+        end_date_str = request.GET.get('end_date', '')
+
+        # filter jobs based on last commit
+        if start_date_str:
+            start_date = khayyam.JalaliDatetime.strptime(start_date_str, '%Y-%m-%d').todate()
+            jobs = jobs.filter(last_commit_date__date__gte=start_date)
+        else:
+            start_date_str = khayyam.JalaliDate(task.created_date).strftime('%Y-%m-%d')
+        
+        if end_date_str:
+            end_date = khayyam.JalaliDatetime.strptime(end_date_str, '%Y-%m-%d').todate()
+            jobs = jobs.filter(last_commit_date__date__lte=end_date)
+        else:
+            end_date_str = khayyam.JalaliDate(datetime.now()).strftime('%Y-%m-%d')
+
+        user_stats = jobs.values('assignee__username').annotate(
+                    total_images=Sum('image_count'), 
+                    total_shapes=Sum('shapes_count'), 
+                    total_jobs=Count('pk')
+                )
+        
+        return render(request, 'engine/user_stats.html', {
+            'user_stats': user_stats,
+            'task_id': pk,
+            'start_date': start_date_str,
+            'end_date': end_date_str,
+        })
 
     @swagger_auto_schema(method='get', operation_summary='Export task as a dataset in a specific format',
         manual_parameters=[openapi.Parameter('action', in_=openapi.IN_QUERY,
