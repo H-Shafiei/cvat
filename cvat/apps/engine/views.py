@@ -749,7 +749,7 @@ class JobViewSet(viewsets.GenericViewSet,
     @swagger_auto_schema(method='put', operation_summary='Method performs an update of all annotations in a specific job')
     @swagger_auto_schema(method='patch', manual_parameters=[
         openapi.Parameter('action', in_=openapi.IN_QUERY, type=openapi.TYPE_STRING, required=True,
-            enum=['create', 'update', 'delete'])],
+            enum=['create', 'update', 'delete', 'createtags', 'deletetags'])],
             operation_summary='Method performs a partial update of annotations in a specific job')
     @swagger_auto_schema(method='delete', operation_summary='Method deletes all annotations for a specific job')
     @action(detail=True, methods=['GET', 'DELETE', 'PUT', 'PATCH'],

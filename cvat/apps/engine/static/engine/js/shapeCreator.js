@@ -191,6 +191,7 @@ class ShapeCreatorView {
         this._controller = drawerController;
         this._createButton = $('#createShapeButton');
         this._labelSelector = $('#shapeLabelSelector');
+        this._tagSelector = $('#tagSelector');
         this._modeSelector = $('#shapeModeSelector');
         this._typeSelector = $('#shapeTypeSelector');
         this._polyShapeSizeInput = $('#polyShapeSize');
@@ -258,6 +259,36 @@ class ShapeCreatorView {
         //         $(`<option value=${labelsKeys[i]}> ${labels[labelsKeys[i]].normalize()} </option>`)
         //     );
         // }
+        this._tagSelector.select2({
+            dir: "rtl",
+            ajax: {
+                url: `/api/v1/tasks/${window.cvat.job.task_id}/labels`,
+                delay: 250,
+                processResults: function (data) {
+                    // Transforms the top-level key of the response object from 'items' to 'results'
+                    $.map(data, function(obj){
+                        obj.text = obj.name;
+                        return obj;
+                    });
+                    return {
+                        results: data,
+                    }
+                    }
+            },
+            placeholder: 'موضوع را تایپ کنید',
+            minimumInputLength: 2,
+            templateSelection: function (data, container) {
+                // Add custom attributes to the <option> tag for the selected option
+                $(data.element).attr('data-pure-data', JSON.stringify(data));
+                return data.text;
+            }
+        });
+
+        this._tagSelector.change(function(){
+            const currentFrame = window.cvat.player.frames.current;
+            window.cvat.tags[currentFrame] = $(this).select2('data');
+        });
+
         this._labelSelector.select2({
             dir: "rtl",
             ajax: {

@@ -521,6 +521,7 @@ function buildAnnotationUI(jobData, taskData, imageMetaData, annotationData, ann
             },
         },
         mode: null,
+        tags: {},
         job: {
             z_order: taskData.z_order,
             id: jobData.id,
@@ -564,6 +565,25 @@ function buildAnnotationUI(jobData, taskData, imageMetaData, annotationData, ann
             },
         },
     };
+
+    // initialize tags data
+    for (const tag of annotationData.tags) {
+        if (!window.cvat.tags[tag.frame]) {
+            window.cvat.tags[tag.frame] = [];
+        }
+        window.cvat.tags[tag.frame].push({ id: tag.label_id, text: window.cvat.labelsInfo.labels()[tag.label_id] });
+    }
+
+    // initialize options of tagSelector
+    if (!window.cvat.tags[window.cvat.player.frames.current]) {
+        window.cvat.tags[window.cvat.player.frames.current] = [];
+    }
+    $("#tagSelector").find('option').remove();
+    for (const tag of window.cvat.tags[window.cvat.player.frames.current]) {
+        let option = new Option(tag.text, tag.id, true, true);
+        $("#tagSelector").append(option);
+    }
+    $("#tagSelector").trigger('change');
 
     // Remove external search parameters from url
     window.history.replaceState(null, null, `${window.location.origin}/?id=${jobData.id}`);

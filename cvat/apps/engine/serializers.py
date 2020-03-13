@@ -220,7 +220,8 @@ class TaskSerializer(WriteOnceMixin, serializers.ModelSerializer):
     def get_labels(self, obj):
         segments = obj.segment_set.all()
         jobs = models.Job.objects.filter(segment__in=segments)
-        label_ids = models.LabeledShape.objects.filter(job__in=jobs).values_list('label', flat=True)
+        label_ids = list(models.LabeledShape.objects.filter(job__in=jobs).values_list('label', flat=True))
+        label_ids += list(models.LabeledImage.objects.filter(job__in=jobs).values_list('label', flat=True))
         labels = models.Label.objects.filter(pk__in=label_ids)
         serializer = LabelSerializer(instance=labels, many=True, source='label_set', partial=True)
         return serializer.data

@@ -836,3 +836,15 @@ button::-moz-focus-inner {
     50%  {stroke-dashoffset: 100; stroke: #f44;}
     100% {stroke-dashoffset: 300; stroke: #09c;}
 }
+
+.topic-container {
+    margin-bottom: 10px;
+    padding: 1em 0;
+    text-align: center;
+    height: auto;
+    width: 100%;
+}
+
+#tagSelector {
+    width: 80%;
+}

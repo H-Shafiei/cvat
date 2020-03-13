@@ -94,6 +94,14 @@ class AnnotationSaverModel extends Listener {
         return this._request(deleted, 'delete');
     }
 
+    async _deletetags(data) {
+        return this._request(data, 'deletetags');
+    }
+
+    async _createtags(data) {
+        return this._request(data, 'createtags');
+    }
+
     async _logs() {
         Logger.addEvent(Logger.EventType.saveJob);
         const totalStat = this._shapeCollection.collectStatistic()[1];
@@ -303,6 +311,25 @@ class AnnotationSaverModel extends Listener {
             }
 
             await this._logs();
+
+
+            // delete previous tags
+            const deleteData = { tags: [], shapes: [], tracks: [], version: this._version };
+            await this._deletetags(deleteData);
+
+            // send new tags
+            const tags = [];
+            const frames = Object.keys(window.cvat.tags);
+            for (const frameNumber of frames) {
+                for (const tag of window.cvat.tags[frameNumber]) {
+                    console.log(tag);
+                    tags.push({ frame: Number(frameNumber), label_id: Number(tag.id), group: 0, attributes: []});
+                }
+            }
+            const createData = { tags: tags, shapes: [], tracks: [], version: this._version };
+            await this._createtags(createData);
+
+            
         } catch (error) {
             this.notify('saveUnlocked');
             this.notify('saveError', error.message);

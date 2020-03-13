@@ -333,6 +333,17 @@ class PlayerModel extends Listener {
             this.notify();
         }
 
+        // change tags input to current frame data
+        if (!window.cvat.tags[window.cvat.player.frames.current]) {
+            window.cvat.tags[window.cvat.player.frames.current] = [];
+        }
+        $("#tagSelector").find('option').remove();
+        for (const tag of window.cvat.tags[window.cvat.player.frames.current]) {
+            let option = new Option(tag.text, tag.id, true, true);
+            $("#tagSelector").append(option);
+        }
+        $("#tagSelector").trigger('change');
+
         return changed;
     }
 

@@ -33,6 +33,8 @@ class PatchAction(str, Enum):
     CREATE = "create"
     UPDATE = "update"
     DELETE = "delete"
+    DELETETAGS = "deletetags"
+    CREATETAGS = "createtags"
 
     @classmethod
     def values(cls):
@@ -68,6 +70,10 @@ def patch_job_data(pk, user, data, action):
         annotation.update(data)
     elif action == PatchAction.DELETE:
         annotation.delete(data)
+    elif action == PatchAction.DELETETAGS:
+        annotation.deletetags()
+    elif action == PatchAction.CREATETAGS:
+        annotation.createtags(data)
 
     return annotation.data
 
@@ -192,7 +198,8 @@ class JobAnnotation:
         self.logger = slogger.job[self.db_job.id]
 
         # select only labels that are assigned to shape annotations
-        label_ids = models.LabeledShape.objects.filter(job=self.db_job).values_list('label', flat=True)
+        label_ids = list(models.LabeledShape.objects.filter(job=self.db_job).values_list('label', flat=True))
+        label_ids += list(models.LabeledImage.objects.filter(job=self.db_job).values_list('label', flat=True))
         label_queryset = models.Label.objects.filter(pk__in=label_ids)
         self.db_labels = {db_label.id:db_label
             for db_label in label_queryset}
@@ -428,6 +435,12 @@ class JobAnnotation:
         self._delete(data)
         self._create(data)
         self._commit()
+
+    def createtags(self, data):
+        self._save_tags_to_db(data["tags"])
+    
+    def deletetags(self):
+        self.db_job.labeledimage_set.all().delete()
 
     def _delete(self, data=None):
         deleted_shapes = 0
