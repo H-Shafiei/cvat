@@ -298,6 +298,13 @@ class Commit(models.Model):
 class JobCommit(Commit):
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="commits")
 
+
+class JobFrameComment(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="comments")
+    frame = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
 class FloatArrayField(models.TextField):
     separator = ","
 

@@ -83,6 +83,7 @@
         <th>تعداد کارهای تمام شده</th>
         <th>تعداد عکس‌ها</th>
         <th>تعداد قاب‌ها</th>
+        <th>تعداد موضوع‌ها</th>
       </tr>
 
       {% for user_stat in user_stats %}
@@ -98,6 +99,9 @@
         </td>
         <td>
           {{ user_stat.total_shapes }}
+        </td>
+        <td>
+          {{ user_stat.total_tags }}
         </td>
       </tr>
       {% endfor %}

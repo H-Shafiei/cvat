@@ -614,13 +614,16 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
         last_commit_subquery = Subquery(last_commits.values('timestamp')[:1])
 
         labeled_shapes = models.LabeledShape.objects.filter(job=OuterRef('pk')).values('job')
+        labeled_images = models.LabeledImage.objects.filter(job=OuterRef('pk')).values('job')
         total_shapes = labeled_shapes.annotate(count=Count('pk')).values('count')
+        total_tags = labeled_images.annotate(count=Count('pk')).values('count')
 
         jobs = Job.objects.filter(segment__task=pk, status__in=[models.StatusChoice.VALIDATION, models.StatusChoice.COMPLETED]).annotate(
                     image_count=F('segment__stop_frame') - F('segment__start_frame') + 1, 
                     # first_commit_date=first_commit_subquery, 
                     last_commit_date=last_commit_subquery,
-                    shapes_count=Subquery(total_shapes)
+                    shapes_count=Subquery(total_shapes),
+                    tags_count=Subquery(total_tags)
                 )
         
         start_date_str = request.GET.get('start_date', '')
@@ -641,7 +644,8 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
 
         user_stats = jobs.values('assignee__username').annotate(
                     total_images=Sum('image_count'), 
-                    total_shapes=Sum('shapes_count'), 
+                    total_shapes=Sum('shapes_count'),
+                    total_tags=Sum('tags_count'),
                     total_jobs=Count('pk')
                 )
         
@@ -758,6 +762,8 @@ class JobViewSet(viewsets.GenericViewSet,
         self.get_object() # force to call check_object_permissions
         if request.method == 'GET':
             data = annotation.get_job_data(pk, request.user)
+            reports = models.JobFrameComment.objects.filter(job=pk).values_list('frame', flat=True)
+            data["reports"] = reports
             return Response(data)
         elif request.method == 'PUT':
             if request.query_params.get("format", ""):
@@ -791,6 +797,22 @@ class JobViewSet(viewsets.GenericViewSet,
                 except (AttributeError, IntegrityError) as e:
                     return Response(data=str(e), status=status.HTTP_400_BAD_REQUEST)
                 return Response(data)
+    
+    @action(detail=True, methods=['GET'], url_path='report-problem')
+    def report_image_problem(self, request, pk):
+        frame_number = request.GET.get('frame', None)
+        if frame_number is None:
+            return Response(data={"message": "فریم پیدا نشد"}, status=status.HTTP_400_BAD_REQUEST)
+
+        frame_number = int(frame_number)
+
+        if not models.JobFrameComment.objects.filter(job=pk, frame=frame_number).exists():
+            job = models.Job.objects.get(pk=pk)
+            models.JobFrameComment.objects.create(job=job, frame=frame_number)
+            return Response(status=status.HTTP_201_CREATED)
+        else:
+            return Response(data={"message": "مشکل قبلا گزارش شده است"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 @method_decorator(name='list', decorator=swagger_auto_schema(
     operation_summary='Method provides a paginated list of users registered on the server'))

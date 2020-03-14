@@ -344,6 +344,15 @@ class PlayerModel extends Listener {
         }
         $("#tagSelector").trigger('change');
 
+        // set state of report button
+        if (window.cvat.reports.includes(window.cvat.player.frames.current)) {
+            $("#reportImageProblem").text('مشکل عکس گزارش شده است.');
+            $("#reportImageProblem").attr('disabled', true);
+        } else {
+            $("#reportImageProblem").text('گزارش مشکل عکس');
+            $("#reportImageProblem").removeAttr('disabled');
+        }
+
         return changed;
     }
 

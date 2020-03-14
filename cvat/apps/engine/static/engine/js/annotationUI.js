@@ -390,6 +390,26 @@ function setupMenu(job, task, shapeCollectionModel,
         });
     });
 
+    $('#reportImageProblem').on('click', () => {
+        const message = 'گزارش مشکل عکس ارسال شود؟';
+        userConfirm(message, async () => {
+            try {
+                const job_id = window.cvat.job.id;
+                const frameNumber = window.cvat.player.frames.current;
+
+                await $.ajax({
+                    url: `/api/v1/jobs/${job_id}/report-problem?frame=${frameNumber}`,
+                    type: 'GET',
+                });
+                $("#reportImageProblem").text('مشکل عکس گزارش شده است.');
+                $("#reportImageProblem").attr('disabled', true);
+                showMessage('با موفقیت ثبت شد!');
+            } catch (error) {
+                showMessage(error.responseJSON.message);
+            }
+        });
+    });
+
     const { shortkeys } = window.cvat.config;
     $('#helpButton').on('click', () => {
         hide();
@@ -522,6 +542,7 @@ function buildAnnotationUI(jobData, taskData, imageMetaData, annotationData, ann
         },
         mode: null,
         tags: {},
+        reports: [],
         job: {
             z_order: taskData.z_order,
             id: jobData.id,
@@ -584,6 +605,11 @@ function buildAnnotationUI(jobData, taskData, imageMetaData, annotationData, ann
         $("#tagSelector").append(option);
     }
     $("#tagSelector").trigger('change');
+
+
+    // initialize reports data
+    window.cvat.reports = annotationData.reports;
+
 
     // Remove external search parameters from url
     window.history.replaceState(null, null, `${window.location.origin}/?id=${jobData.id}`);

@@ -848,3 +848,19 @@ button::-moz-focus-inner {
 #tagSelector {
     width: 80%;
 }
+
+.report-problem {
+    bottom: 5px;
+    left: 5px;
+    position: absolute;
+    padding: 5px 10px;
+    outline: none;
+    border: 1px solid #888;
+    background-color: #ddd;
+    z-index: 50;
+}
+
+.report-problem:disabled {
+    color: #7f0000;
+    border-color: #7f0000;
+}
