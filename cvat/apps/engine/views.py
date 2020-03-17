@@ -615,15 +615,18 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
 
         labeled_shapes = models.LabeledShape.objects.filter(job=OuterRef('pk')).values('job')
         labeled_images = models.LabeledImage.objects.filter(job=OuterRef('pk')).values('job')
+        reports = models.JobFrameComment.objects.filter(job=OuterRef('pk')).values('job')
         total_shapes = labeled_shapes.annotate(count=Count('pk')).values('count')
         total_tags = labeled_images.annotate(count=Count('pk')).values('count')
+        total_reports = reports.annotate(count=Count('pk')).values('count')
 
         jobs = Job.objects.filter(segment__task=pk, status__in=[models.StatusChoice.VALIDATION, models.StatusChoice.COMPLETED]).annotate(
                     image_count=F('segment__stop_frame') - F('segment__start_frame') + 1, 
                     # first_commit_date=first_commit_subquery, 
                     last_commit_date=last_commit_subquery,
                     shapes_count=Subquery(total_shapes),
-                    tags_count=Subquery(total_tags)
+                    tags_count=Subquery(total_tags),
+                    reports_count=Subquery(total_reports)
                 )
         
         start_date_str = request.GET.get('start_date', '')
@@ -646,6 +649,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
                     total_images=Sum('image_count'), 
                     total_shapes=Sum('shapes_count'),
                     total_tags=Sum('tags_count'),
+                    total_reports=Sum('reports_count'),
                     total_jobs=Count('pk')
                 )
         

@@ -348,9 +348,13 @@ class PlayerModel extends Listener {
         if (window.cvat.reports.includes(window.cvat.player.frames.current)) {
             $("#reportImageProblem").text('مشکل عکس گزارش شده است.');
             $("#reportImageProblem").attr('disabled', true);
+            $("#player").css({'border': '1px solid #7f0000'});
+            $("#player").css({'background-color': '#fff2f2'});
         } else {
             $("#reportImageProblem").text('گزارش مشکل عکس');
             $("#reportImageProblem").removeAttr('disabled');
+            $("#player").css({'border': '1px solid #bbb'});
+            $("#player").css({'background-color': ''});
         }
 
         return changed;

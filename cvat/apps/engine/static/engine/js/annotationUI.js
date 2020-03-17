@@ -401,8 +401,13 @@ function setupMenu(job, task, shapeCollectionModel,
                     url: `/api/v1/jobs/${job_id}/report-problem?frame=${frameNumber}`,
                     type: 'GET',
                 });
+
+                // change data
+                window.cvat.reports.push(frameNumber);
                 $("#reportImageProblem").text('مشکل عکس گزارش شده است.');
                 $("#reportImageProblem").attr('disabled', true);
+                $("#player").css({'border': '1px solid #7f0000'});
+                $("#player").css({'background-color': '#fff2f2'});
                 showMessage('با موفقیت ثبت شد!');
             } catch (error) {
                 showMessage(error.responseJSON.message);

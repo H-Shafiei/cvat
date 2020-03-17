@@ -864,3 +864,21 @@ button::-moz-focus-inner {
     color: #7f0000;
     border-color: #7f0000;
 }
+
+.select2-container .select2-search.select2-search--inline {
+    display: block;
+    clear: both;
+    text-align: right;
+    border: 1px solid #aaa;
+    float: unset;
+    margin-top: 5px;
+}
+
+.select2-container .select2-search.select2-search--inline .select2-search__field {
+    width: 100% !important;
+    padding: 5px;
+}
+
+.select2-selection--multiple .select2-selection__choice {
+    margin-bottom: 5px;
+}

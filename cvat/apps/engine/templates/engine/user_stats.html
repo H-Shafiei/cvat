@@ -84,6 +84,7 @@
         <th>تعداد عکس‌ها</th>
         <th>تعداد قاب‌ها</th>
         <th>تعداد موضوع‌ها</th>
+        <th>تعداد گزارش‌ مشکل عکس</th>
       </tr>
 
       {% for user_stat in user_stats %}
@@ -102,6 +103,9 @@
         </td>
         <td>
           {{ user_stat.total_tags }}
+        </td>
+        <td>
+          {{ user_stat.total_reports }}
         </td>
       </tr>
       {% endfor %}
