@@ -224,7 +224,7 @@ class TasksPageComponent extends React.PureComponent<TasksPageProps & RouteCompo
                         />
                     ) : <EmptyListComponent />
                 }
-                <FeedbackComponent />
+                {/* <FeedbackComponent /> */}
             </div>
         );
     }

@@ -52,14 +52,14 @@ function HeaderContainer(props: Props): JSX.Element {
 
     const menu = (
         <Menu className='cvat-header-menu' mode='vertical'>
-            <Menu.Item>
+            {/* <Menu.Item>
                 <Icon type='setting' />
                 Settings
             </Menu.Item>
             <Menu.Item>
                 <Icon type='info-circle' />
                 About
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item
                 onClick={onLogout}
                 disabled={logoutFetching}
@@ -74,8 +74,17 @@ function HeaderContainer(props: Props): JSX.Element {
     return (
         <Layout.Header className='cvat-header'>
             <div className='cvat-left-header'>
-                <Icon className='cvat-logo-icon' component={CVATLogo} />
-
+                {/* <Icon className='cvat-logo-icon' component={CVATLogo} /> */}
+                <Button
+                    className='cvat-header-button'
+                    type='link'
+                    style={{ fontWeight: 'bold'}}
+                    onClick={
+                        (): void => props.history.push('/')
+                    }
+                >
+                    WISEYE
+                </Button>
                 <Button
                     className='cvat-header-button'
                     type='link'
@@ -119,7 +128,7 @@ function HeaderContainer(props: Props): JSX.Element {
                 }
             </div>
             <div className='cvat-right-header'>
-                <Button
+                {/* <Button
                     className='cvat-header-button'
                     type='link'
                     onClick={
@@ -130,8 +139,8 @@ function HeaderContainer(props: Props): JSX.Element {
                 >
                     <Icon type='github' />
                     <Text className='cvat-text-color'>GitHub</Text>
-                </Button>
-                <Button
+                </Button> */}
+                {/* <Button
                     className='cvat-header-button'
                     type='link'
                     onClick={
@@ -144,7 +153,7 @@ function HeaderContainer(props: Props): JSX.Element {
                 >
                     <Icon type='question-circle' />
                     Help
-                </Button>
+                </Button> */}
                 <Dropdown overlay={menu} className='cvat-header-menu-dropdown'>
                     <span>
                         <Icon className='cvat-header-account-icon' component={AccountIcon} />
