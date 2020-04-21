@@ -50,4 +50,4 @@ furl==2.0.0
 Khayyam==3.0.17
 django-extensions==2.2.9
 ipython==7.9.0
-jupyter==5.7.6
+jupyter==1.0.0
