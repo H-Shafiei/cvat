@@ -38,6 +38,7 @@ services:
       - cvat_db
     ports:
       - "8080:8080"
+      - "8888:8888"
     build:
       context: .
       args:
