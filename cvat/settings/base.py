@@ -114,7 +114,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'corsheaders',
     'allauth.socialaccount',
-    'rest_auth.registration'
+    'rest_auth.registration',
+    'django_extensions'
 ]
 
 SITE_ID = 1
