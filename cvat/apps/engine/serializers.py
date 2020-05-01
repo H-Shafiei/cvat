@@ -37,8 +37,11 @@ class AttributeSerializer(serializers.ModelSerializer):
         return attribute
 
 class LabelSerializer(serializers.ModelSerializer):
-    attributes = AttributeSerializer(many=True, source='attributespec_set',
-        default=[])
+    attributes = serializers.SerializerMethodField()
+
+    def get_attributes(self, obj):
+        return []
+    
     class Meta:
         model = models.Label
         fields = ('id', 'name', 'attributes')
@@ -218,12 +221,10 @@ class TaskSerializer(WriteOnceMixin, serializers.ModelSerializer):
         return serializer.data
     
     def get_labels(self, obj):
-        segments = obj.segment_set.all()
-        jobs = models.Job.objects.filter(segment__in=segments)
-        label_ids = list(models.LabeledShape.objects.filter(job__in=jobs).values_list('label', flat=True))
-        label_ids += list(models.LabeledImage.objects.filter(job__in=jobs).values_list('label', flat=True))
+        label_ids = list(models.LabeledShape.objects.filter(job__segment__task=obj).values_list('label', flat=True))
+        label_ids += list(models.LabeledImage.objects.filter(job__segment__task=obj).values_list('label', flat=True))
         labels = models.Label.objects.filter(pk__in=label_ids)
-        serializer = LabelSerializer(instance=labels, many=True, source='label_set', partial=True)
+        serializer = LabelSerializer(instance=labels, many=True, partial=True)
         return serializer.data
 
     class Meta:
