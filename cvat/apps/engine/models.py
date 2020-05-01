@@ -311,7 +311,7 @@ class FloatArrayField(models.TextField):
     def from_db_value(self, value, expression, connection):
         if not value:
             return value
-        return [float(v) for v in value.split(self.separator)]
+        return [float(v) for v in eval(value)]
 
     def to_python(self, value):
         if isinstance(value, list):
