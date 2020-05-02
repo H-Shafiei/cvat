@@ -253,65 +253,83 @@ class ShapeCreatorView {
 
         const labels = window.cvat.labelsInfo.labels();
         const labelsKeys = Object.keys(labels);
-        // for (let i = 0; i < labelsKeys.length; i += 1) {
-        //     this._labelSelector.append(
-        //         // eslint-disable-next-line
-        //         $(`<option value=${labelsKeys[i]}> ${labels[labelsKeys[i]].normalize()} </option>`)
-        //     );
-        // }
-        this._tagSelector.select2({
-            dir: "rtl",
-            ajax: {
-                url: `/api/v1/tasks/${window.cvat.job.task_id}/labels`,
-                delay: 250,
-                processResults: function (data) {
-                    // Transforms the top-level key of the response object from 'items' to 'results'
-                    $.map(data, function(obj){
-                        obj.text = obj.name;
-                        return obj;
-                    });
-                    return {
-                        results: data,
-                    }
-                    }
-            },
-            placeholder: 'موضوع را تایپ کنید',
-            minimumInputLength: 2,
-            templateSelection: function (data, container) {
-                // Add custom attributes to the <option> tag for the selected option
-                $(data.element).attr('data-pure-data', JSON.stringify(data));
-                return data.text;
+        if (window.cvat.bulkLabel) {
+            this._labelSelector.select2({
+                dir: "rtl",
+                ajax: {
+                    url: `/api/v1/tasks/${window.cvat.job.task_id}/labels`,
+                    delay: 250,
+                    processResults: function (data) {
+                        // Transforms the top-level key of the response object from 'items' to 'results'
+                        $.map(data, function(obj){
+                            obj.text = obj.name;
+                            return obj;
+                        });
+                        return {
+                            results: data,
+                        }
+                        }
+                },
+                placeholder: 'برچسب را تایپ کنید',
+                minimumInputLength: 2,
+                templateSelection: function (data, container) {
+                    // Add custom attributes to the <option> tag for the selected option
+                    $(data.element).attr('data-pure-data', JSON.stringify(data));
+                    return data.text;
+                }
+            });
+            this._tagSelector.select2({
+                dir: "rtl",
+                ajax: {
+                    url: `/api/v1/tasks/${window.cvat.job.task_id}/labels`,
+                    delay: 250,
+                    processResults: function (data) {
+                        // Transforms the top-level key of the response object from 'items' to 'results'
+                        $.map(data, function(obj){
+                            obj.text = obj.name;
+                            return obj;
+                        });
+                        return {
+                            results: data,
+                        }
+                        }
+                },
+                placeholder: 'موضوع را تایپ کنید',
+                minimumInputLength: 2,
+                templateSelection: function (data, container) {
+                    // Add custom attributes to the <option> tag for the selected option
+                    $(data.element).attr('data-pure-data', JSON.stringify(data));
+                    return data.text;
+                }
+            });
+        } else {
+            for (let i = 0; i < labelsKeys.length; i += 1) {
+                const labelData = {
+                    id: labelsKeys[i],
+                    text: labels[labelsKeys[i]],
+                    name: labels[labelsKeys[i]],
+                    attributes: [],
+                };
+                this._labelSelector.append(
+                    $(`<option value=${labelsKeys[i]} data-pure-data='${JSON.stringify(labelData)}'> ${labels[labelsKeys[i]].normalize()} </option>`)
+                );
+                this._tagSelector.append(
+                    $(`<option value=${labelsKeys[i]} data-pure-data='${JSON.stringify(labelData)}'> ${labels[labelsKeys[i]].normalize()} </option>`)
+                );
             }
-        });
+            this._labelSelector.select2({
+                dir: "rtl",
+                placeholder: 'برچسب را تایپ کنید',
+            });
+            this._tagSelector.select2({
+                dir: "rtl",
+                placeholder: 'برچسب را تایپ کنید',
+            });
+        }
 
         this._tagSelector.change(function(){
             const currentFrame = window.cvat.player.frames.current;
             window.cvat.tags[currentFrame] = $(this).select2('data');
-        });
-
-        this._labelSelector.select2({
-            dir: "rtl",
-            ajax: {
-                url: `/api/v1/tasks/${window.cvat.job.task_id}/labels`,
-                delay: 250,
-                processResults: function (data) {
-                    // Transforms the top-level key of the response object from 'items' to 'results'
-                    $.map(data, function(obj){
-                        obj.text = obj.name;
-                        return obj;
-                    });
-                    return {
-                        results: data,
-                    }
-                    }
-            },
-            placeholder: 'برچسب را تایپ کنید',
-            minimumInputLength: 2,
-            templateSelection: function (data, container) {
-                // Add custom attributes to the <option> tag for the selected option
-                $(data.element).attr('data-pure-data', JSON.stringify(data));
-                return data.text;
-            }
         });
 
         this._typeSelector.val('box');

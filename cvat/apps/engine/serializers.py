@@ -221,9 +221,14 @@ class TaskSerializer(WriteOnceMixin, serializers.ModelSerializer):
         return serializer.data
     
     def get_labels(self, obj):
-        label_ids = list(models.LabeledShape.objects.filter(job__segment__task=obj).values_list('label', flat=True))
-        label_ids += list(models.LabeledImage.objects.filter(job__segment__task=obj).values_list('label', flat=True))
-        labels = models.Label.objects.filter(pk__in=label_ids)
+        if obj.bulk_label:
+            # only include labels that are already used
+            label_ids = list(models.LabeledShape.objects.filter(job__segment__task=obj).values_list('label', flat=True))
+            label_ids += list(models.LabeledImage.objects.filter(job__segment__task=obj).values_list('label', flat=True))
+            labels = models.Label.objects.filter(pk__in=label_ids)
+        else:
+            # include all labels
+            labels = models.Label.objects.filter(task=obj)
         serializer = LabelSerializer(instance=labels, many=True, partial=True)
         return serializer.data
 
@@ -233,7 +238,7 @@ class TaskSerializer(WriteOnceMixin, serializers.ModelSerializer):
             'bug_tracker', 'created_date', 'updated_date', 'overlap',
             'segment_size', 'z_order', 'status', 'labels', 'segments',
             'image_quality', 'start_frame', 'stop_frame', 'frame_filter',
-            'project')
+            'project', 'bulk_label')
         read_only_fields = ('size', 'mode', 'created_date', 'updated_date',
             'status')
         write_once_fields = ('overlap', 'segment_size', 'image_quality')

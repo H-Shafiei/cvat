@@ -555,6 +555,7 @@ function buildAnnotationUI(jobData, taskData, imageMetaData, annotationData, ann
             mode: taskData.mode,
             images: imageMetaData,
         },
+        bulkLabel: taskData.bulk_label,
         search: {
             value: window.location.search,
 
