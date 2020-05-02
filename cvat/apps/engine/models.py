@@ -74,6 +74,7 @@ class Task(models.Model):
     frame_filter = models.CharField(max_length=256, default="", blank=True)
     status = models.CharField(max_length=32, choices=StatusChoice.choices(),
         default=StatusChoice.ANNOTATION)
+    bulk_label = models.BooleanField(default=True)
 
     # Extend default permission model
     class Meta:
