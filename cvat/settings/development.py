@@ -15,6 +15,12 @@ MIDDLEWARE += [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
+for key in RQ_QUEUES:
+    RQ_QUEUES[key]['HOST'] = 'cvat_redis'
+
+CACHEOPS_REDIS['host'] = 'cvat_redis'
+
+
 ALLOWED_HOSTS.append('testserver')
 
 # Django-sendfile:
