@@ -3,3 +3,7 @@ services:
   cvat:
     volumes:
       - ./cvat/:/home/django/cvat/
+    build:
+      context: .
+      args:
+        DJANGO_CONFIGURATION: "development"
