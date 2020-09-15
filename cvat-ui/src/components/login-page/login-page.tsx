@@ -47,7 +47,7 @@ function LoginPageComponent(props: LoginPageComponentProps & RouteComponentProps
                     <Row type='flex' justify='start' align='top'>
                         <Col>
                             <Text strong>
-                                New to CVAT? Create
+                                New to WISEYE? Create
                                 <Link to='/auth/register'> an account</Link>
                             </Text>
                         </Col>

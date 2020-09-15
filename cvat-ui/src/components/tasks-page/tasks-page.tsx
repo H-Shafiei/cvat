@@ -221,7 +221,7 @@ class TasksPageComponent extends React.PureComponent<TasksPageProps & RouteCompo
                             onSwitchPage={this.handlePagination}
                         />
                     ) : <EmptyListComponent />}
-                <FeedbackComponent />
+                {/* <FeedbackComponent /> */}
             </div>
         );
     }
